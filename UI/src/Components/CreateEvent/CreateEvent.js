@@ -107,7 +107,7 @@ const CreateEvent = () => {
                                             </FormControl>
                                         </div>
                                         <div class="col-12">
-                                            <Button variant="contained">SignUp</Button>
+                                            <Button variant="contained">Create Event</Button>
                                         </div>
                                     </form>
                                 </CardContent>
