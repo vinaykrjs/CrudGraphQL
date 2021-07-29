@@ -1,0 +1,10 @@
+nav ul, ul {
+    list-style-type: none;
+    width: 100px;
+    height: 30px;
+    background-color: pink
+}
+ul a {
+    text-decoration: none;
+    color: rgb(216, 57, 57);
+}

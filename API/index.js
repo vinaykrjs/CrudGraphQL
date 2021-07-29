@@ -1,73 +1,47 @@
-const express = require('express')
-const bodyparser = require('body-parser');
-const mongoose = require('mongoose');
-const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const { graphqlHTTP } = require("express-graphql");
 
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+
+const Event = require("./models/event");
+const User = require('./models/user');
+
+const graphQlSchema = require("./graphql/schema/index");
+const graphQlResolvers = require("./graphql/resolvers/index");
 const app = express();
-app.use(bodyparser.json())
+app.use(cors());
+app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://test:BMVOSr59D04q6wyd@cluster0.safva.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
+app.get("/", (req, res, next) => {
+  res.send("Hello Vinay");
 });
 
-const events = [];
+app.get("/isallwell", (req, res, next) => {
+  res.send("backend is working good");
+});
 
-app.use('/graph', graphqlHTTP({
-    schema: buildSchema(`
-        type Event {
-            _id: ID!
-            title: String!
-            description: String!
-            price: Float!
-            date: String!
-        }
-
-        input EventInput {
-            title: String!
-            description: String!
-            price: Float!
-            date: String!
-        }
-
-        type RootQuery {
-            events: [Event!]!
-        }
-        type RootMutation {
-            createEvent(eventInput: EventInput): Event
-        }
-
-        schema {
-            query: RootQuery
-            mutation: RootMutation
-        }
-    `),
-    rootValue: {
-        events: () => {
-            return events;
-        },
-        createEvent: (args) => {
-            const event = {
-                _id: Math.random,
-                title: args.eventInput.title,
-                description: args.eventInput.description,
-                price: +args.eventInput.price,
-                date: new Date().toISOString()
-            }
-            events.push(event);
-            return event;
-        }
-    },
-    graphiql: true
-}))
-
-app.get('/', (req, res) => {
-    res.send('Hello World')
-})
-
-app.listen(5000);
-
-module.exports = app;
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: graphQlSchema,
+    rootValue: graphQlResolvers,
+    graphiql: true,
+  })
+);
+// mongodb+srv://vinaykwin:<password>@eventbookingcluster.r1ciy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+mongoose
+  .connect(
+    `mongodb+srv://vinaykrjs:9VVQJHyKesdGuvu7@clustereventbookingappd.qk6pz.mongodb.net/EventsDB?retryWrites=true&w=majority`,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => {
+    console.log("conected to db");
+    app.listen(4616);
+    console.log("app is listening on port : 4616");
+  })
+  .catch((err) => {
+    console.log(err);
+  });

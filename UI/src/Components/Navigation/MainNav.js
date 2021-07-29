@@ -15,6 +15,9 @@ const MainNav = (props) => {
                             <li className="nav-item">
                                 <NavLink className="nav-link active" aria-current="page" to='/create'>Create Event</NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" aria-current="page" to='/events'>All Events</NavLink>
+                            </li>
                             {/* <li className="nav-item">
                                 <a className="nav-link" href="#">Features</a>
                             </li>
