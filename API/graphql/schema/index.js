@@ -3,10 +3,14 @@ const { buildSchema } = require("graphql");
 module.exports = buildSchema(`
         type Event {
           _id: ID!
-          title: String!
-          description: String!
-          price: Float!
-          date: String!
+          name: String!
+          startDate: String!
+          endDate: String!
+          slots: String!
+          place: String!
+          country: String!
+          state: String!
+          city: String!
         }
 
         type User {
@@ -17,10 +21,14 @@ module.exports = buildSchema(`
         }
 
         input EventInput {
-          title: String!
-          description: String!
-          price: Float!
-          date: String!
+          name: String!
+          startDate: String!
+          endDate: String!
+          slots: String!
+          place: String!
+          country: String!
+          state: String!
+          city: String!
         }
 
         input UserInput {

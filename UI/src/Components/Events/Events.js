@@ -45,7 +45,7 @@
 //                             <Card className='shadow-lg p-3 mb-5 bg-body rounded'>
 //                                 <CardHeader title="Create an event" />
 //                                 <CardContent>
-                                
+
 //                                 </CardContent>
 //                             </Card>
 //                         </div>
@@ -77,80 +77,94 @@ const useStyles = makeStyles({
   }
 });
 
-  // const TableCell = withStyles((theme) => ({
-  //   head: {
-  //     backgroundColor: theme.palette.common.black,
-  //     color: theme.palette.common.white,
-  //   }
-  // }));
+// const TableCell = withStyles((theme) => ({
+//   head: {
+//     backgroundColor: theme.palette.common.black,
+//     color: theme.palette.common.white,
+//   }
+// }));
 
 export default function Events() {
   const classes = useStyles();
 
-  const [events, setEvents] =  useState([]);
-  useEffect(()=>{
-      const requestBody = {
-          query: `
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    const requestBody = {
+      query: `
               query {
                 events {
                   _id
-                  title
-                  description
-                  price
-                  date
+                  name
+                  startDate
+                  endDate
+                  slots
+                  place
+                  country
+                  state
+                  city
                 }
               }
             `
-        };
-        fetch('http://localhost:4616/graphql', {
-          method: 'POST',
-          body: JSON.stringify(requestBody),
-          headers: {    
-              'Content-Type': 'application/json',
-          },
-        })
-          .then(res => res.json())
-          .then(resp=> {
-              if(resp && resp.data && resp.data.events) 
-              {
-                  setEvents(resp.data.events);
-              }
-              console.log(('immmmm cinayyy',resp.data.events[0].title))
-            })
-          .catch(err => {
-            console.log('vinay err::',err);
-          });
-  },[])
+    };
+    fetch('http://localhost:4616/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(resp => {
+        if (resp && resp.data && resp.data.events) {
+          resp.data.events.forEach((item) => {
+            const date = new Date(item.startDate);
+            console.log(date)
+          })
+          setEvents(resp.data.events);
+        }
+      })
+      .catch(err => {
+        console.log('vinay err::', err);
+      });
+  }, [])
 
   return (
     <TableContainer component={Paper}>
-    {events && events.length > 0 ?
-      <Table className={classes.table} aria-label="Our Events">
-        <TableHead>
-          <TableRow>
-            <TableCell>S.no</TableCell>
-            <TableCell>Event Title</TableCell>
-            <TableCell>Event Description</TableCell>
-            <TableCell >Price</TableCell>
-            <TableCell >Date</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {events.map((row,index) => (
-            <TableRow key={index}>
-              <TableCell component="th" scope="row">
-                {index+1}
-              </TableCell>
-              <TableCell >{row.title}</TableCell>
-              <TableCell >{row.description}</TableCell>
-              <TableCell >{row.price}</TableCell>
-              <TableCell >{row.date}</TableCell>
+      {events && events.length > 0 ?
+        <Table className={classes.table} aria-label="Our Events">
+          <TableHead>
+            <TableRow>
+              <TableCell>S.no</TableCell>
+              <TableCell>Event Title</TableCell>
+              <TableCell>Place</TableCell>
+              <TableCell >Start Date</TableCell>
+              <TableCell >End Date</TableCell>
+              <TableCell >Slots</TableCell>
+              <TableCell >City</TableCell>
+              <TableCell >State</TableCell>
+              <TableCell >Country</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      : <h3 style={{ marginTop: "59px" }}>No records found</h3>
-    }
+          </TableHead>
+          <TableBody>
+            {events.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell >{row.name}</TableCell>
+                <TableCell >{row.place}</TableCell>
+                <TableCell >{row.startDate}</TableCell>
+                <TableCell >{row.endDate}</TableCell>
+                <TableCell >{row.slots}</TableCell>
+                <TableCell >{row.city}</TableCell>
+                <TableCell >{row.state}</TableCell>
+                <TableCell >{row.country}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        : <h3 style={{ marginTop: "59px" }}>No records found</h3>
+      }
     </TableContainer>
   );
 }

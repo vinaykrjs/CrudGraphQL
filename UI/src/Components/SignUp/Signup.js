@@ -57,17 +57,17 @@ const Signup = () => {
                             <CardHeader title="Sign To The Portal" />
                             <CardContent>
 
-                                <form class="row g-3" onSubmit={handleSubmit}>
-                                    <div class="col-md-12">
+                                <form className="row g-3" onSubmit={handleSubmit}>
+                                    <div className="col-md-12">
                                         <Input value={name} onChange={(e)=>setName(e.target.value)}  type="name" className='w-100' id="standard-basic" placeholder="Name" />
                                     </div>
-                                    <div class="col-md-12">
+                                    <div className="col-md-12">
                                         <Input value={email} onChange={(e)=>setEmail(e.target.value)} className='w-100' type="email" id="standard-basic" placeholder="Email" />
                                     </div>
-                                    <div class="col-md-12">
+                                    <div className="col-md-12">
                                         <Input value={password} onChange={(e)=>setPassword(e.target.value)} className='w-100' type="password" id="standard-password-input" placeholder="Password"  />
                                     </div>
-                                    <div class="col-12">
+                                    <div className="col-12">
                                         <Button variant="contained" type="submit">SignUp</Button>
                                     </div>
                                 </form>
