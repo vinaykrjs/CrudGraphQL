@@ -42,7 +42,7 @@ const Signup = () => {
       }
     )
     .then(res => res.json())
-    .then(resp=>{ console.log('immmmm cinayyy',resp) })
+   /*  .then(resp=>{ console.log('immmmm cinayyy',resp) }) */
     .catch(err => { console.log('vinay err::',err) });
     console.log(name, email, password);
   };

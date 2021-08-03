@@ -28,6 +28,23 @@ module.exports = {
       throw err;
     }
   },
+  currentEvent: async params => {
+    //     console.log(params._id,'vinay');
+
+    // // db.test.find({_id:myId})
+    // console.log(myId,'vinay objec');
+
+    try {
+      let mongoose = require('mongoose');
+      // var myId = new Mongo.ObjectID(_id);
+      let myId = mongoose.Types.ObjectId(params._id.trim());
+      console.log(params._id, 'i m in try');
+      const currentEvent = await Event.find({ _id: myId });
+      return currentEvent;
+    } catch (err) {
+      throw err;
+    }
+  },
   createUser: args => {
     return User.findOne({ email: args.userInput.email })
       .then(user => {
@@ -67,5 +84,39 @@ module.exports = {
     }).catch((error) => {
       return error
     })
+  },
+  updateEvent: args => {
+    if (!args._id) return;
+    return Event.findOneAndUpdate(
+      {
+        _id: args._id
+      },
+      {
+        $set: {
+          name: args.name,
+          startDate: args.startDate,
+          endDate: args.endDate,
+          slots: args.slots,
+          place: args.place,
+          country: args.country,
+          state: args.state,
+          city: args.city
+
+        }
+      }, { new: true }, (err, Event) => {
+        if (err) {
+          console.log('Something went wrong when updating the events');
+        } else {
+        }
+      }
+    );
+  },
+  deleteEvent: args => {
+    return Event.findOneAndDelete({ _id: args._id })
   }
+  /*  updateEvent: args => {
+     return Event.findOneAndUpdate({_id: args._id},{name: args.name},{ new:true } )
+      return Event.findOneAndUpdate({_id: args._id},{name: args.name},{StartDate: args.startDate},{EndDate: args.endDate},{Slot: args.slots},{Place: args.place},{Country: args.country},{State: args.state},{Place: args.city},{ new:true } )
+   }, */
+
 }
